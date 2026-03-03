@@ -125,8 +125,34 @@ const logoutController = async (req,res) => {
     }
 }
 
+const getMeController = async (req,res) => {
+    try {
+        const { userId } = req.user;
+        
+        const user = await userModel.findById(userId)
+
+        if(!user){
+            return  res.status(401).json({
+                message: "Failed to get user details"
+            })
+        }
+
+        return res.status(200).json({
+            message: "User fetched successfully",
+            data: user
+        })
+
+    } catch (error) {
+        console.error("Can't find user : ", error);
+        return  res.status(401).json({
+            message: "Failed to fetch user details"
+        })
+    }
+}
+
 module.exports = { 
     registerController,
     loginController,
-    logoutController
+    logoutController,
+    getMeController
 }
