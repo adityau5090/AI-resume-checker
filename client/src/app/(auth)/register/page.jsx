@@ -7,17 +7,22 @@ import { ModeToggle } from '@/components/ui/mode-toggle'
 import { ArrowRightIcon } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { useAuthStore } from '@/store/auth.store'
+import { useApiAuthStore } from '@/services/api.auth.store'
+import { Spinner } from '@/components/ui/spinner'
 
 const RegisterPage = () => {
+
+    const { loading } = useAuthStore();
+    const { handleRegister } = useApiAuthStore();
 
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        await handleRegister({name, email, password})
     }
   return (
     <main className='h-screen dark:bg-zinc-950 bg-zinc-100 text-zinc-200 flex justify-center items-center'>
@@ -67,9 +72,10 @@ const RegisterPage = () => {
                         <Button
                         variant="outline"
                         size='lg'
+                        disabled={loading}
                         className={"bg-zinc-800 text-zinc-100  dark:hover:bg-green-500  hover:bg-green-500 hover:cursor-pointer font-bold border-green-400 dark:border-green-400 transition-all duration-500 ease-in-out w-full" }
                         >
-                            Register <ArrowRightIcon /></Button>
+                        {loading ? <> Loading <Spinner /></> : <> Register <ArrowRightIcon /> </>}</Button>
                 
                 </form>
             </CardContent>
