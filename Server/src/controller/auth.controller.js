@@ -92,7 +92,11 @@ const loginController = async (req,res) => {
 
         return res.status(201).json({
             message: "User login successfully",
-            data: user,
+            data: {
+                _id: user.id,
+                name: user.name,
+                email: user.email
+            },
         })
 
     } catch (error) {
