@@ -6,18 +6,27 @@ import { Label } from '@/components/ui/label'
 import { ModeToggle } from '@/components/ui/mode-toggle'
 import { ArrowRightIcon } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuthStore } from '@/store/auth.store'
 import { useApiAuthStore } from '@/services/api.auth.store'
 import { Spinner } from '@/components/ui/spinner'
+import { useRouter } from 'next/navigation'
 
 const LoginPage = () => {
 
-    const { loading } = useAuthStore();
+    const router = useRouter();
+
+    const { loading, user } = useAuthStore();
     const { handleLogin } = useApiAuthStore();
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    useEffect(()=> {
+        if(user) {
+            router.push("/")
+        }
+    },[user, router])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
