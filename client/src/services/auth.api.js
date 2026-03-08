@@ -34,7 +34,7 @@ export const login = async ({ email, password }) => {
 export const logout = async () => {
     try {
         const response = await api.get('/api/auth/logout')
-
+        console.log("Response : ",response);
         return response.data
     } catch (error) {
         console.error("Error in logout : ", error);
@@ -43,7 +43,9 @@ export const logout = async () => {
 
 export const getMe = async () => {
     try {
-        const response = await PI.get('/api/auth/get- me')
+        const response = await api.get('/api/auth/get-me', {
+            withCredentials: true
+        })
 
         return response.data
     } catch (error) {
