@@ -58,12 +58,17 @@ export const useApiAuthStore = () => {
             setLoading(true);
 
             const data = await getMe();
-            console.log("Data:", data);
+            console.log("Data: ", data);
 
             setUser(data.data);
 
         } catch (error) {
-            console.error("User not logged in");
+            if (error.response?.status === 401) {
+        // user not logged in → normal case
+        setUser(null);
+      } else {
+        console.error("Unexpected error:", error);
+      }
         } finally {
             setLoading(false);
         }

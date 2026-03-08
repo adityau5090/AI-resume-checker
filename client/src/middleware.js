@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 
 export function middleware(req) {
-  const token = req.cookies.get("token")?.value;
+  const token = req.cookies.get("token");
 
-  console.log("Token : ", token);
   const isPublicRoute = req.nextUrl.pathname.startsWith("/login");
 
   if (!isPublicRoute && !token) {
