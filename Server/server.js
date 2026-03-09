@@ -3,6 +3,9 @@ const { app } = require('./src/app')
 const { connectDB } = require("./src/config/db")
 connectDB();
 
+const { invokeGeminiAI } = require("./src/services/ai.service")
+invokeGeminiAI()
+
 app.listen(5000, () => {
     console.log("Server is running at port 5000");
 })
