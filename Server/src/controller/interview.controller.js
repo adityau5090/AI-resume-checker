@@ -16,17 +16,23 @@ const generateInterviewReportController = async (req,res) => {
 
     console.log("AI report : ",interViewReportByAI);
 
-    const parseArray = (arr) => arr.map(item => {
-    if (typeof item === "string") {
-        return JSON.parse(item)
-    }
-    return item
-})
+//     const parseArray = (arr) =>
+//   arr.map((item) => {
+//     if (typeof item === "string") {
+//       try {
+//         return JSON.parse(`{${item}}`)
+//       } catch (err) {
+//         console.log("Parse failed:", item)
+//         return null
+//       }
+//     }
+//     return item
+//   })
 
-interViewReportByAI.technicalQuestions = parseArray(interViewReportByAI.technicalQuestions)
-interViewReportByAI.behavioralQuestions = parseArray(interViewReportByAI.behavioralQuestions)
-interViewReportByAI.skillGaps = parseArray(interViewReportByAI.skillGaps)
-interViewReportByAI.preparationPlan = parseArray(interViewReportByAI.preparationPlan)
+// interViewReportByAI.technicalQuestions = parseArray(interViewReportByAI.technicalQuestions)
+// interViewReportByAI.behavioralQuestions = parseArray(interViewReportByAI.behavioralQuestions)
+// interViewReportByAI.skillGaps = parseArray(interViewReportByAI.skillGaps)
+// interViewReportByAI.preparationPlan = parseArray(interViewReportByAI.preparationPlan)
 
     const interviewReport = await interviewReportModel.create({
         user: req.user.userId,
@@ -42,6 +48,8 @@ interViewReportByAI.preparationPlan = parseArray(interViewReportByAI.preparation
     })
 
 } 
+
+
 
 const getReportByIdController = async (req,res) => {
     try {
@@ -74,7 +82,7 @@ const getAllInterviewReportController = async (req,res) => {
     try {
         const user = req.user.userId
 
-        const interviewReports = interviewReportModel.find({ user }).sort({ createdAt: -1}).select("-resume -selfDescription -jobDescription -_v -updatedAt -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan") 
+        const interviewReports = await interviewReportModel.find({ user }).sort({ createdAt: -1}).select("-resume -selfDescription -jobDescription -_v -updatedAt -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan") 
 
         if(!interviewReports){
         console.error("Interview reports not found")
