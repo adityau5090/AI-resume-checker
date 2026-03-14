@@ -1,32 +1,47 @@
 "use client"
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-
+import { useInterview } from '@/hooks/useInterview';
+import { useRouter } from 'next/navigation';
+import { Spinner } from '@/components/ui/spinner';
 
 export default function Home() {
   // form state hooks
   const [jobDescription, setJobDescription] = useState('');
   const [resumeFile, setResumeFile] = useState(null);
   const [selfDescription, setSelfDescription] = useState('');
-  const [strategy, setStrategy] = useState('balanced');
+  const resumeInputRef = useRef()
+  const router = useRouter()
+  const { loading, generateReport} = useInterview()
 
-  const handleJobChange = (e) => setJobDescription(e.target.value);
   const handleResumeChange = (e) => {
     const file = e.target.files[0];
     setResumeFile(file);
   };
-  const handleSelfChange = (e) => setSelfDescription(e.target.value);
-  const handleStrategyChange = (e) => setStrategy(e.target.value);
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // placeholder for submission logic
-    console.log({ jobDescription, resumeFile, selfDescription, strategy });
+    // const resumeFile = resumeInputRef.current.files[0]
+
+    const data = await generateReport({ jobDescription, selfDescription, resume: resumeFile})
+    console.log(data);
+    if(data?._id){
+      router.push(`interview/${data._id}`)
+    }
   };
+
+  if(loading){
+    return (
+      <main className='h-screen flex justify-center items-center'>
+        <div>Loading.. <Spinner /></div>
+      </main>
+    )
+  }
 
    return (
     <main className="h-screen w-full flex justify-center items-center m-5 p-5">
@@ -37,7 +52,7 @@ export default function Home() {
             id="jobDescription"
             name="jobDescription"
             value={jobDescription}
-            onChange={handleJobChange}
+            onChange={(e) => {setJobDescription(e.target.value)}}
             placeholder={"Enter job description here...."}
             className="border-zinc-200 border-r-green-400 border-r-4 shadow-md shadow-green-300/30 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none flex-1 w-full font-mono resize-none"
 />
@@ -59,7 +74,8 @@ export default function Home() {
                         name="resume"
                         type="file"
                         accept=".pdf"
-                        hidden
+                        className={"hidden"}
+                        ref={resumeInputRef}
                         onChange={handleResumeChange}
                     />
                 </div>
@@ -69,7 +85,7 @@ export default function Home() {
                     id="selfDescription"
                     name="selfDescription"
                     value={selfDescription}
-                    onChange={handleSelfChange}
+                    onChange={(e) => {setSelfDescription(e.target.value)}}
                     placeholder="Highlight achievements or focus areas..."
                     required
                     className={"border-zinc-200  border-r-green-400 border-r-4 shadow-md shadow-green-300/30 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none h-full"}
@@ -78,10 +94,11 @@ export default function Home() {
                 <Button
                         variant="outline"
                         size='lg'
+                        // disabled={loading}
                         type="submit"
                         className={"bg-zinc-800 text-zinc-100  dark:hover:bg-green-500  hover:bg-green-500 hover:cursor-pointer font-bold border-green-400 dark:border-green-400 transition-all duration-500 ease-in-out w-full mt-4" }
                         >
-                        Generate
+                        {/* {loading ? <>Generating <Spinner /></> : <>Generate</>} */}Generate
                 </Button>
             </div>
         </div>
