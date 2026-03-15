@@ -9,6 +9,7 @@ import { useInterview } from '@/hooks/useInterview';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '@/components/ui/spinner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Navbar from '@/components/PageComponent/Navbar';
 
 export default function Home() {
   // form state hooks
@@ -52,6 +53,8 @@ const handleClick = (id) => {
   router.push(`/interview/${id}`)
 }
    return (
+   <>
+    <Navbar />
     <main className="h-screen w-full flex flex-col justify-center items-center m-3 p-5 gap-15">
         <form onSubmit={handleSubmit} className="bg-zinc-100 dark:bg-zinc-800 border-2 border-zinc-600/50  flex flex-col md:flex-row gap-[2vw] p-4 rounded-2xl h-[80vh] md:h-[70vh] max-w-[80vw] md:max-w-[50vw] w-full">
           <div className="self-stretch flex flex-col flex-1 shrink-0 w-full h-full min-w-[300px]">
@@ -131,6 +134,7 @@ const handleClick = (id) => {
           </div>
         </div>
     </main>
+    </>
   )
 
 }

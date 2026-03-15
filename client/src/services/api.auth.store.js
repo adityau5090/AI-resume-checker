@@ -1,7 +1,6 @@
 import { useAuthStore } from "@/store/auth.store";
 import { register, login, logout, getMe } from "./auth.api";
 import { useEffect } from "react";
-// const setUser = useAuthStore((state) => state.setUser);
 
 export const useApiAuthStore = () => {
     
@@ -39,7 +38,7 @@ export const useApiAuthStore = () => {
 
         try {
             setLoading(true);
-            const data = await logout();
+            await logout();
             // console.log(data);
             setUser(null) 
         } catch (error) {
@@ -49,33 +48,6 @@ export const useApiAuthStore = () => {
         }
         
     }
-
-    useEffect(() => {
-    const getAndSetUser = async () => {
-        const { setUser, setLoading } = useAuthStore.getState();
-
-        try {
-            setLoading(true);
-
-            const data = await getMe();
-            console.log("Data: ", data);
-
-            setUser(data.data);
-
-        } catch (error) {
-            if (error.response?.status === 401) {
-        // user not logged in → normal case
-        setUser(null);
-      } else {
-        console.error("Unexpected error:", error);
-      }
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    getAndSetUser();
-}, []);
 
     return {
         handleLogin,

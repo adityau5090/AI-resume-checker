@@ -54,7 +54,7 @@ export const login = async ({ email, password }) => {
 
 export const logout = async () => {
     try {
-        const response = await api.get('/api/auth/logout')
+        const response = await api.post('/api/auth/logout')
         // console.log("Response : ",response);
         return response.data
     } catch (error) {
