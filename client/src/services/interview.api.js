@@ -31,8 +31,8 @@ const generateInterviewReport = async ({jobDescription, selfDescription, resume}
             }
         })
     
-        console.log("Generated report : ", response)
-        return response
+        // console.log("Generated report : ", response.data)
+        return response.data
     } catch (error) {
         console.error("Error in generating report");
         toast.warning(error?.response?.data?.message,  { position: "top-center" })
@@ -54,7 +54,7 @@ const getInterviewReportById = async (interviewId) => {
 const getAllInterviewReports = async () => {
     try {
         const response = await api.get(`/api/interview/`)
-        console.log("Reports :", response)
+        // console.log("Reports :", response)
         return response
     } catch (error) {
         console.error("Error in fetching reports: ",error)

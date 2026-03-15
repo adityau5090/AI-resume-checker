@@ -108,20 +108,20 @@ export default function InterviewPage() {
 
   return (
     <main className="h-screen w-full flex justify-center items-center">
-      <div className="flex gap-4 bg-zinc-200/40 dark:bg-zinc-900/60 p-4 rounded-2xl h-[80vh] w-[90vw]">
+      <div className="flex gap-4 bg-zinc-200/90 dark:bg-zinc-900/60 p-4 rounded-2xl h-[80vh] w-[90vw]">
         {/* left nav */}
-        <aside className="flex flex-col space-y-4 w-1/6 text-zinc-100">
+        <aside className="flex flex-col space-y-4 w-1/6 text-zinc-700 dark:text-zinc-100">
           <button
             onClick={() => setSelected('technical')}
-            className={`text-left px-3 py-2 rounded-lg ${selected === 'technical' ? 'bg-zinc-700' : 'hover:bg-zinc-700/60'}`}
+            className={`text-left px-3 py-2 rounded-lg ${selected === 'technical' ? ' bg-zinc-900 text-zinc-100 dark:bg-zinc-700' : 'hover:bg-zinc-900 dark:hover:bg-zinc-700/60'}`}
           >Technical Questions</button>
           <button
             onClick={() => setSelected('behavioral')}
-            className={`text-left px-3 py-2 rounded-lg ${selected === 'behavioral' ? 'bg-zinc-700' : 'hover:bg-zinc-700/60'}`}
+            className={`text-left px-3 py-2 rounded-lg ${selected === 'behavioral' ? 'bg-zinc-900 text-zinc-100 dark:bg-zinc-700' : 'hover:bg-zinc-900 dark:hover:bg-zinc-700/60'}`}
           >Behavioral Questions</button>
           <button
             onClick={() => setSelected('roadmap')}
-            className={`text-left px-3 py-2 rounded-lg ${selected === 'roadmap' ? 'bg-zinc-700' : 'hover:bg-zinc-700/60'}`}
+            className={`text-left px-3 py-2 rounded-lg ${selected === 'roadmap' ? 'bg-zinc-900 text-zinc-100 dark:bg-zinc-700' : 'hover:bg-zinc-900 dark:hover:bg-zinc-700/60'}`}
           >Road Map</button>
         </aside>
 
@@ -135,14 +135,14 @@ export default function InterviewPage() {
           <div className="flex flex-col items-center">
             <div className="relative w-24 h-24">
               <div className="absolute inset-0 rounded-full border-8 border-green-500"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-zinc-100">
+              <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-zinc-800 dark:text-zinc-100">
                 {Math.round(report.matchScore)}%
               </div>
             </div>
-            <p className="mt-2 text-sm text-zinc-400">Strong match for this role</p>
+            <p className="mt-2 text-sm text-zinc-700/90 dark:text-zinc-400">Strong match for this role</p>
           </div>
           <div>
-            <h3 className="font-semibold mb-2">Skill gaps</h3>
+            <h3 className="font-semibold mb-2 text-zinc-700 dark:text-zinc-200">Skill gaps</h3>
             <div className="flex flex-col gap-2">
               {report.skillGaps.map((s, i) => {
                 let colors = 'border-yellow-600 text-yellow-600 bg-yellow-100/20';

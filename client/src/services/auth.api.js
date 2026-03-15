@@ -5,6 +5,25 @@ const api = axios.create({
     withCredentials: true
 })
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+
+    if (error.response?.status === 401) {
+
+        const publicRoutes = ["/login","/register"]
+      // prevent infinite redirect
+      if(!publicRoutes.includes(window.location.pathname)){
+        window.location.href = "/login"
+      }
+      
+
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export const register = async ({ name, email, password }) => {
 
     try {
@@ -15,6 +34,7 @@ export const register = async ({ name, email, password }) => {
         return response.data;
     } catch (error) {
         console.error("Error in register : ", error)
+        throw error
     }
 }
 
@@ -28,6 +48,7 @@ export const login = async ({ email, password }) => {
         return response.data;
     } catch (error) {
         console.error("Error in login : ", error)
+        throw error
     }
 }
 
@@ -38,6 +59,7 @@ export const logout = async () => {
         return response.data
     } catch (error) {
         console.error("Error in logout : ", error);
+        throw error
     }
 }
 
@@ -47,6 +69,7 @@ export const getMe = async () => {
 
         return response.data
     } catch (error) {
+        console.log(error)
         throw error
     }
 }
