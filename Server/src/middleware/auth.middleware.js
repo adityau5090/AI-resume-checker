@@ -26,6 +26,8 @@ const authUser = async (req,res,next) => {
         next();
     } catch (error) {
         console.error(error)
+
+        res.clearCookie("token")
         return res.status(401).json({
                 message: "Unauthorized access"
                 

@@ -4,6 +4,11 @@ const { generateInterviewReport } = require("../services/ai.service")
 
 const generateInterviewReportController = async (req,res) => {
 
+    if(!req.file){
+        return res.status(400).json({
+            message: "Resume is required!",
+        })
+    }
     const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
     // console.log("Resume Content : ", resumeContent.text)
     const { selfDescription, jobDescription } = req.body
@@ -15,24 +20,6 @@ const generateInterviewReportController = async (req,res) => {
     })
 
     console.log("AI report : ",interViewReportByAI);
-
-//     const parseArray = (arr) =>
-//   arr.map((item) => {
-//     if (typeof item === "string") {
-//       try {
-//         return JSON.parse(`{${item}}`)
-//       } catch (err) {
-//         console.log("Parse failed:", item)
-//         return null
-//       }
-//     }
-//     return item
-//   })
-
-// interViewReportByAI.technicalQuestions = parseArray(interViewReportByAI.technicalQuestions)
-// interViewReportByAI.behavioralQuestions = parseArray(interViewReportByAI.behavioralQuestions)
-// interViewReportByAI.skillGaps = parseArray(interViewReportByAI.skillGaps)
-// interViewReportByAI.preparationPlan = parseArray(interViewReportByAI.preparationPlan)
 
     const interviewReport = await interviewReportModel.create({
         user: req.user.userId,
@@ -97,9 +84,9 @@ const getAllInterviewReportController = async (req,res) => {
     })
 
     } catch (error) {
-        console.error("Error in finding interview report")
+        console.error("Error in finding interview reports : ",error)
         return res.status(401).json({
-            message: "Can't find all interview report"
+            message: "Can't find all interview reports"
         })
     }
 }

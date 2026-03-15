@@ -36,7 +36,7 @@ const registerController = async (req,res) => {
             { expiresIn: "3h"}
         )
 
-        res.cookie("token", token)
+        res.cookie("token", token, { maxAge: 3*60*60*3000})
 
         return res.status(201).json({
             message: "User registerd successfully",
@@ -55,7 +55,7 @@ const loginController = async (req,res) => {
     try {
         const { email, password } = req.body;
 
-        if(!email.trim() || !password){
+        if(!email || !password){
             return res.status(401).json({
                 message: "All fields are required"
             })
@@ -88,7 +88,7 @@ const loginController = async (req,res) => {
             { expiresIn: "3h"}
         )
 
-        res.cookie("token", token)
+        res.cookie("token", token, { maxAge: 3*60*60*3000})
 
         return res.status(201).json({
             message: "User login successfully",
